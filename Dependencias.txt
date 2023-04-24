@@ -1,0 +1,6 @@
+qrcode
+fitz
+frontend
+pycryptodome
+
+Web buena para generar QR: https://www.qrcode-monkey.com/es/
