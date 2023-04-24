@@ -46,7 +46,7 @@ while (1):
         print("Funciona generar el QR")
 
         #6. Meter el QR generado dentro del QR que redirecciona a la web de Coldplay
-        img_visible_path = "./qr_coldplay_5.png"
+        img_visible_path = "./qr_coldplay_bueno_negro.png"
         img_hiden_path = "./" + qr_name 
         output_path = "qr_coldplay_hidden.png"
         Encoder.hide_image(img_visible_path, img_hiden_path, output_path)
