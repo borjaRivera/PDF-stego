@@ -149,15 +149,16 @@ class Encoder():
 			necessary to recover an identical copy of the image we want to hide.
 		"""
 		encoded_image = img_visible.load()
-		print(encoded_image[0, 0])
+		#print(encoded_image[0, 0])
 		img_hidden_copy = img_hidden.load()
-		print(img_hidden_copy[0, 0])
+		#print(img_hidden_copy[0, 0])
 		width_visible, height_visible = img_visible.size
 		width_hidden, height_hidden = img_hidden.size
 		hidden_image_pixels = Encoder.get_binary_pixel_values(img_hidden_copy, width_hidden, height_hidden)
 		encoded_image = Encoder.change_binary_values(encoded_image, hidden_image_pixels, width_visible, height_visible, width_hidden, height_hidden)
 		return img_visible
 
+	
 
 if __name__ == '__main__':
 	Encoder.hide_image("qr_coldplay_bueno.png", "qr_random_key_ciphered.png", "qr_test_definitivo.png")

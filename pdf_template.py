@@ -8,7 +8,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 class PdfTemplate:
 
-    def create():
+    def create(pdf_name, image_name, qr_name):
 
         # data which we are going to be displayed in a  tabular format
 
@@ -20,11 +20,11 @@ class PdfTemplate:
 
         ["16/2/2021","Advanced Ethical Hacking","Online Live","8,000.00/-"],
 
-            ["12/1/2021", "Data Science using Python","Offline Course","9,800.00/-"],
+        ["12/1/2021", "Data Science using Python","Offline Course","9,800.00/-"],
 
-            ["02/5/2021","Technical Writing","Online Free","2,439.00/-"],
+        ["02/5/2021","Technical Writing","Online Free","2,439.00/-"],
 
-            ["Signature", "", "", "_________________"],
+        ["Signature", "", "", "_________________"],
 
         ]
 
@@ -32,7 +32,7 @@ class PdfTemplate:
 
         # creating a Document structure with A4 size page
 
-        docu = SimpleDocTemplate("invoice.pdf", pagesize=A4)
+        docu = SimpleDocTemplate(pdf_name, pagesize=A4)
 
         styles = getSampleStyleSheet()
 
@@ -66,10 +66,12 @@ class PdfTemplate:
 
         table = Table(tableData, style=style)
 
-        filename = 'chicken_in_furbo.png'
-        image2 = Image(filename, 450, 300)
+        
+        qr = Image(qr_name, 75, 75)
+
+        main_image = Image(image_name, 250, 150)
 
         # finally, we have to build the actual pdf merging all objects together
 
-        docu.build([title, table, image2])
+        docu.build([title, table, main_image, qr])
 
