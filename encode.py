@@ -75,9 +75,21 @@ class Encoder():
 		for col in range(width):
 			for row in range(height):
 				pixel = img[col, row]
-				r = pixel[0]
-				g = pixel[1]
-				b = pixel[2]
+				r=0
+				g=0
+				b=0
+				if(pixel==0):
+					r=0
+					g=0
+					b=0
+				elif (pixel==255):
+					r = 255
+					g = 255
+					b = 255
+				else:
+					r=pixel[0]
+					g=pixel[1]
+					b=pixel[2]
 				r_binary, g_binary, b_binary = rgb_to_binary(r, g, b)
 				hidden_image_pixels += r_binary + g_binary + b_binary
 		return hidden_image_pixels
@@ -137,7 +149,9 @@ class Encoder():
 			necessary to recover an identical copy of the image we want to hide.
 		"""
 		encoded_image = img_visible.load()
+		print(encoded_image[0, 0])
 		img_hidden_copy = img_hidden.load()
+		print(img_hidden_copy[0, 0])
 		width_visible, height_visible = img_visible.size
 		width_hidden, height_hidden = img_hidden.size
 		hidden_image_pixels = Encoder.get_binary_pixel_values(img_hidden_copy, width_hidden, height_hidden)
@@ -146,7 +160,7 @@ class Encoder():
 
 
 if __name__ == '__main__':
-	Encoder.hide_image("furbo.jpg", "qr_random_key_ciphered.png", "qr_test_definitivo.png")
+	Encoder.hide_image("qr_coldplay_bueno.png", "qr_random_key_ciphered.png", "qr_test_definitivo.png")
 
 
 

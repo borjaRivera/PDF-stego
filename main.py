@@ -1,7 +1,7 @@
 import binascii
 import os
-from pdf_template import PdfTemplate
-from images_extractor import ImagesExtractor
+#from pdf_template import PdfTemplate
+#from images_extractor import ImagesExtractor
 from encode import Encoder
 from AES import AESCipher
 from qr_generator import QR
@@ -43,18 +43,17 @@ while (1):
         #5. Metemos la clave cifrada en un QR que generamos
         qr_name = "qr_random_key_ciphered.png"
         QR.generate_qr(random_key_ciphered, qr_name)
+        print("Funciona generar el QR")
 
         #6. Meter el QR generado dentro del QR que redirecciona a la web de Coldplay
-        img_visible_path = "./qr_coldplay.png"
+        img_visible_path = "./qr_coldplay_5.png"
         img_hiden_path = "./" + qr_name 
         output_path = "qr_coldplay_hidden.png"
         Encoder.hide_image(img_visible_path, img_hiden_path, output_path)
 
+        print("Ocultado el QR")
+
     
-
-
-
-
 
     elif option == "2":
         print("Decoding")
@@ -62,7 +61,7 @@ while (1):
 
     else:
         exit()
-s
+
 
 
 

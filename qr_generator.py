@@ -14,7 +14,5 @@ class QR:
         # Guardar la imagen del QR en un archivo PNG
         imagen_qr.save(name)
 
-
-
 if __name__ == '__main__':
 	QR.generate_qr("hola me llamo Paco", "test_bisbal.png")
