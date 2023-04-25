@@ -2,12 +2,12 @@ import binascii
 import os
 
 from pathlib import Path
-from images_extractor import ImagesExtractor
-from encode import Encoder
+from pdf_extractor import Extractor
+from img2img_encoder import Encoder
 from AES import AESCipher
 from qr_generator import QR
 from pdf_template import PdfTemplate
-from ocultar import TextEncoder
+from text2img_encoder import TextEncoder
 
 
 while (1):
@@ -80,6 +80,14 @@ while (1):
 
     elif option == "2":
         print("Decoding")
+
+        #1. Leer el pdf que el usuario quiere decodificar
+        pdf_name = input("Introduce the PDF file name to decode: ")
+
+        #2. Extract background image and QR
+        Extractor.extractImages(pdf_name)
+
+        
 
 
     else:

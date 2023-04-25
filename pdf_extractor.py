@@ -3,15 +3,12 @@ import fitz
 import os
 from PIL import Image
 
-class ImagesExtractor():
+class Extractor():
 
-    def extract(file_path):
-
-        #Define path to PDF file
-        #file_path = 'invoice.pdf'
+    def extractImages(file_path):
 
         #Define path for saved images
-        images_path = 'images/'
+        images_path = 'tmp/'
 
         #Open PDF file
         pdf_file = fitz.open(file_path)
@@ -47,3 +44,7 @@ class ImagesExtractor():
             with open(os.path.join(images_path, image_name) , 'wb') as image_file:
                 image_file.write(image_bytes)
                 image_file.close()
+
+
+if __name__ == '__main__':
+	Extractor.extractImages("test.pdf")

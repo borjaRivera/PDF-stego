@@ -1,77 +1,76 @@
-from reportlab.platypus import SimpleDocTemplate, Table, Paragraph, TableStyle, Image
-
+from reportlab.lib.units import inch
 from reportlab.lib import colors
-
-from reportlab.lib.pagesizes import A4
-
+from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Paragraph, Image
+
 
 class PdfTemplate:
 
     def create(pdf_name, image_name, qr_name):
+        # Información del concierto
+        nombre_artista = "Coldplay"
+        fecha = "28 de mayo de 2023"
+        hora = "21:30h"
+        lugar = "Estadio Santiago Bernabéu"
+        precio = "150 €"
+        nombre_comprador = "Florentino Pérez"
+        asiento = "Sección A, Fila 10, Asiento 5"
+        gira = "Coldplay - Music Of The Spheres World Tour 21:30h"
 
-        # data which we are going to be displayed in a  tabular format
+        # Estilos para los elementos del PDF
+        estilo_normal = getSampleStyleSheet()["Normal"]
+        estilo_titulo = getSampleStyleSheet()["Heading1"]
+        estilo_titulo.alignment = 0 
+        estilo_subtitulo = getSampleStyleSheet()["Heading2"]
+        estilo_subtitulo.alignment = 0
 
-        tableData = [
+        # Crear el PDF
+        doc = SimpleDocTemplate(pdf_name, pagesize=letter)
+        contenido = []
 
-        ["Date", "Course Name", "Course Type", "Course Price (Rs.)"],
+        # Título del PDF
+        contenido.append(Paragraph("Esta es tu entrada 1 de 1", estilo_titulo))
+        #contenido.append(Spacer(1, 0.2 * inch))
+        contenido.append(Paragraph(gira, estilo_subtitulo))
+        contenido.append(Spacer(1, 0.1 * inch))
 
-        ["4/6/2021","Video Editing using Filmora X","Online Self-paced","1,500.00/-",],
+        # Imagen
+        imagen = Image(image_name, width=7*inch, height=3.5*inch)
+        contenido.append(imagen)
+        contenido.append(Spacer(1, 0.2 * inch))
 
-        ["16/2/2021","Advanced Ethical Hacking","Online Live","8,000.00/-"],
-
-        ["12/1/2021", "Data Science using Python","Offline Course","9,800.00/-"],
-
-        ["02/5/2021","Technical Writing","Online Free","2,439.00/-"],
-
-        ["Signature", "", "", "_________________"],
-
-        ]
-
-
-
-        # creating a Document structure with A4 size page
-
-        docu = SimpleDocTemplate(pdf_name, pagesize=A4)
-
-        styles = getSampleStyleSheet()
-
-
-
-        doc_style = styles["Heading1"]
-
-        doc_style.alignment = 1
-
+        # Tabla con la información del concierto y el código QR
+        tabla = Table([
+            [Paragraph("<b>Fecha:</b>", estilo_normal), fecha],
+            [Paragraph("<b>Hora:</b>", estilo_normal), hora],
+            [Paragraph("<b>Lugar:</b>", estilo_normal), lugar],
+            [Paragraph("<b>Precio:</b>", estilo_normal), precio],
+            [Paragraph("<b>Nombre del comprador:</b>", estilo_normal), nombre_comprador],
+            [Paragraph("<b>Asiento:</b>", estilo_normal), asiento],
+            [Paragraph("<b>Código QR:</b>", estilo_normal), Image(qr_name, 100, 100)]
+        ], colWidths=[2.5 * inch, 4.5* inch])
+        tabla.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#FAD000")),
+            ("TEXTCOLOR", (0, 0), (-1, 0), colors.HexColor("#FFFFFF")),
+            ("ALIGNMENT", (0, 0), (-1, -1), "LEFT"),
+            ("FONTNAME", (0, 0), (-1, -1), "Helvetica-Bold"),
+            ("FONTSIZE", (0, 0), (-1, 0), 12),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ("TOPPADDING", (0, 0), (-1, -1), 5),
+            ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+            ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+            ("FONTNAME", (0, 0), (0, -1), "Helvetica-Bold")
+        ]))
 
 
-        title = Paragraph("COURSE INVOICE", doc_style)
+        # Añadir la tabla al contenido del PDF
+        contenido.append(tabla)
 
-        style = TableStyle([
 
-                ("BOX", (0, 0), (-1, -1), 1, colors.black),
+        # Nota legal
+        texto_legal = "Esta entrada es válida solo para el portador nombrado en la misma y no puede ser transferida, revendida o duplicada. En caso de pérdida o robo no se emitirán duplicados. La entrada no garantiza la disponibilidad de un asiento específico y puede ser reubicada en caso de necesidad."
+        contenido.append(Paragraph(texto_legal, estilo_normal))
 
-                ("GRID", (0, 0), (4, 4), 1, colors.chocolate),
-
-                ("BACKGROUND", (0, 0), (3, 0), colors.skyblue),
-
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
-
-                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-
-                ("BACKGROUND", (0, 1), (-1, -1), colors.beige),
-
-            ])
-
-        # creates a table object using the Table() to pass the table data and the style object
-
-        table = Table(tableData, style=style)
-
-        
-        qr = Image(qr_name, 75, 75)
-
-        main_image = Image(image_name, 250, 150)
-
-        # finally, we have to build the actual pdf merging all objects together
-
-        docu.build([title, table, main_image, qr])
-
+        # Añadir el contenido al PDF y cerrarlo
+        doc.build(contenido)
