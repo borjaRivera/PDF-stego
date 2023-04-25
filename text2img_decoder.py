@@ -10,65 +10,68 @@
 """
 from PIL import Image
 
-caracter_terminacion = "11111111"
-def obtener_lsb(byte):
-	return byte[-1]
+class TextDecoder():
 
-def obtener_representacion_binaria(numero):
-	return bin(numero)[2:].zfill(8)
+	caracter_terminacion = "11111111"
 
-def binario_a_decimal(binario):
-	return int(binario, 2)
+	def obtener_lsb(byte):
+		return byte[-1]
 
-def caracter_desde_codigo_ascii(numero):
-	return chr(numero)
+	def obtener_representacion_binaria(numero):
+		return bin(numero)[2:].zfill(8)
 
-def leer(ruta_imagen):
-	imagen = Image.open(ruta_imagen)
-	pixeles = imagen.load()
+	def binario_a_decimal(binario):
+		return int(binario, 2)
 
-	tamaño = imagen.size
-	anchura = tamaño[0]
-	altura = tamaño[1]
+	def caracter_desde_codigo_ascii(numero):
+		return chr(numero)
 
-	byte = ""
-	mensaje = ""
+	def leer(ruta_imagen):
+		imagen = Image.open(ruta_imagen)
+		pixeles = imagen.load()
 
-	for x in range(anchura):
-		for y in range(altura):
-			pixel = pixeles[x, y]
+		tamaño = imagen.size
+		anchura = tamaño[0]
+		altura = tamaño[1]
 
-			rojo = pixel[0]
-			verde = pixel[1]
-			azul = pixel[2]
+		byte = ""
+		mensaje = ""
+
+		for x in range(anchura):
+			for y in range(altura):
+				pixel = pixeles[x, y]
+
+				rojo = pixel[0]
+				verde = pixel[1]
+				azul = pixel[2]
 
 
-			byte += obtener_lsb(obtener_representacion_binaria(rojo))
-			if len(byte) >= 8:
-				if byte == caracter_terminacion:
-					break
-				mensaje += caracter_desde_codigo_ascii(binario_a_decimal(byte))
-				byte = ""
+				byte += TextDecoder.obtener_lsb(TextDecoder.obtener_representacion_binaria(rojo))
+				if len(byte) >= 8:
+					if byte == TextDecoder.caracter_terminacion:
+						break
+					mensaje += TextDecoder.caracter_desde_codigo_ascii(TextDecoder.binario_a_decimal(byte))
+					byte = ""
 
-			byte += obtener_lsb(obtener_representacion_binaria(verde))
-			if len(byte) >= 8:
-				if byte == caracter_terminacion:
-					break
-				mensaje += caracter_desde_codigo_ascii(binario_a_decimal(byte))
-				byte = ""
+				byte += TextDecoder.obtener_lsb(TextDecoder.obtener_representacion_binaria(verde))
+				if len(byte) >= 8:
+					if byte == TextDecoder.caracter_terminacion:
+						break
+					mensaje += TextDecoder.caracter_desde_codigo_ascii(TextDecoder.binario_a_decimal(byte))
+					byte = ""
 
-			byte += obtener_lsb(obtener_representacion_binaria(azul))
-			if len(byte) >= 8:
-				if byte == caracter_terminacion:
-					break
-				mensaje += caracter_desde_codigo_ascii(binario_a_decimal(byte))
-				byte = ""
+				byte += TextDecoder.obtener_lsb(TextDecoder.obtener_representacion_binaria(azul))
+				if len(byte) >= 8:
+					if byte == TextDecoder.caracter_terminacion:
+						break
+					mensaje += TextDecoder.caracter_desde_codigo_ascii(TextDecoder.binario_a_decimal(byte))
+					byte = ""
 
-		else:
-			continue
-		break
-	return mensaje
+			else:
+				continue
+			break
+		return mensaje
 
-mensaje = leer("coldplay_hidden.png")
-print("El mensaje oculto es:")
-print(mensaje)
+	#mensaje = leer("coldplay_hidden.png")
+	#print("El mensaje oculto es:")
+	#print(mensaje)

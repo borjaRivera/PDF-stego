@@ -8,7 +8,8 @@ class Extractor():
     def extractImages(file_path):
 
         #Define path for saved images
-        images_path = 'tmp/'
+        images_path = 'tmp'
+        os.mkdir(images_path)
 
         #Open PDF file
         pdf_file = fitz.open(file_path)
@@ -47,4 +48,4 @@ class Extractor():
 
 
 if __name__ == '__main__':
-	Extractor.extractImages("test.pdf")
+	Extractor.extractImages("entrada_coldplay.pdf")
