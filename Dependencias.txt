@@ -1,5 +1,5 @@
 qrcode
-fitz
+pymupdf
 frontend
 pycryptodome
 opencv-python

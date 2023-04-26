@@ -33,7 +33,7 @@ while (1):
         print("Encoding")
 
         file_name_to_hide = input("Introduce the file name which content you want to encode: ")
-        with open(file_name_to_hide, 'r') as file:
+        with open(file_name_to_hide, 'rb') as file:
             content = file.read()
         
         #2. Generate a random key
@@ -104,21 +104,33 @@ while (1):
 
         #5. Descifrar esa clave aleatoria con la clave del usuario
         user_key = input("Introduce the user key to decrypt the random key: ")
-        AESCipher.init(user_key)
-        random_key_clear = AESCipher.decrypt(random_key_ciphered)
-        print("The random key in clear text is: ", random_key_clear)
+        correct_pwd=False
+        for i in range (2):
+            if len(user_key)<5:
+                user_key = input ("Incorrect Password, try again: ")
+            else:
+                AESCipher.init(user_key)
+                random_key_clear = AESCipher.decrypt(random_key_ciphered)
+                if(random_key_clear==""):
+                    user_key = input ("Incorrect Password, try again: ")
+                else:
+                    correct_pwd=True
+                    break
+        if not correct_pwd:
+            print ("Incorrect Password, maximum tries exceeded")
+        else:
+            print ("Correct Password")
+            print("The random key in clear text is: ", random_key_clear)
+            #6. Extraer el texto escondido (cifrado) en la imagen 
+            image_ciphered_path = tmp_path + "2.png"
+            text_ciphered = TextDecoder.leer(image_ciphered_path)
 
-        #6. Extraer el texto escondido (cifrado) en la imagen 
-        image_ciphered_path = tmp_path + "2.png"
-        text_ciphered = TextDecoder.leer(image_ciphered_path)
-
-        #7. Descifrar el contenido de la imagen con la random_key
-        AESCipher.init(random_key_clear)
-        text_clear = AESCipher.decrypt(text_ciphered)
-        print("\nThe secret is:", text_clear)
-        print("\n")
-
-        
+            #7. Descifrar el contenido de la imagen con la random_key
+            AESCipher.init(random_key_clear)
+            text_clear = AESCipher.decrypt(text_ciphered)
+            print("\nThe secret is:\n")
+            print (text_clear)
+            print("\n")
 
         ## Remove tmp files
         rmtree("tmp")
