@@ -3,5 +3,4 @@ pymupdf
 frontend
 pycryptodome
 opencv-python
-
 Web buena para generar QR: https://www.qrcode-monkey.com/es/
