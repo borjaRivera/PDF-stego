@@ -7,7 +7,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Par
 
 class PdfTemplate:
 
-    def create(pdf_name, image_name, qr_name):
+    def create (pdf_name, image_name, qr_name):
         # Información del concierto
         nombre_artista = "Coldplay"
         fecha = "28 de mayo de 2023"
@@ -69,7 +69,18 @@ class PdfTemplate:
 
 
         # Nota legal
-        texto_legal = "Esta entrada es válida solo para el portador nombrado en la misma y no puede ser transferida, revendida o duplicada. En caso de pérdida o robo no se emitirán duplicados. La entrada no garantiza la disponibilidad de un asiento específico y puede ser reubicada en caso de necesidad."
+        texto_legal = """Organiza: B66255233 CYCLOP 2014 S.L.. La adquisición de esta entrada representa la aceptación de las siguientes condiciones: La organización no garantiza la autenticidad y no se responsabiliza de las
+        entradas adquiridas fuera de los puntos de venta oficiales. Este canal no se hace responsable de cualquier diferencia de precio respecto a entradas adquiridas a través de otros canales de venta. No se
+        admiten cambios ni devoluciones, salvo por causas previstas en la legislación vigente. La organización se reserva todos los derechos de imagen y propiedad intelectual del espectáculo, quedando prohibida
+        cualquier filmación, grabación o reproducción en el interior del recinto sin la autorización expresa del organizador. El público podrá ser objeto de registro a la entrada del recinto de acuerdo con la Ley.
+        Queda prohibida la introducción de toda clase de armas y objetos arrojadizos o peligrosos. Se reserva el derecho de admisión por razones de orden público. No se permitirá la entrada al recinto a las
+        personas que se encuentren bajo los efectos de bebidas alcohólicas, estupefacientes, psicotrópicos, estimulantes o sustancias análogas o sean portadores de ellas. La entrada deberá conservase completa
+        y en buen estado, pudiendo denegarse la admisión en caso contrario. Toda entrada enmendada, rota, en mal estado o con condiciones de falsificación, autorizará al organizador a denegar la entrada al
+        recinto. El organizador podrá negar o expulsar del recinto al portador en caso de incumplimiento de las indicaciones del personal de la organización. El canal únicamente gestiona la distribución de entradas
+        por cuenta del organizador, por lo que queda expresamente eximido de toda obligación y/o responsabilidad que compete al organizador. Toda reclamación sobre la realización, suspensión, modificación o
+        anulación del espectáculo deberá dirigirse al organizador cuyos datos constan en esta misma entrada. Las relaciones jurídicas, derecho y obligaciones derivadas de la tenencia de esta entrada estarán
+        sujetas en todo momento a lo establecido por las leyes españolas vigentes."""
+
         contenido.append(Paragraph(texto_legal, estilo_normal))
 
         # Añadir el contenido al PDF y cerrarlo
