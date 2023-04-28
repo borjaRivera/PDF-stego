@@ -14,11 +14,15 @@ from text2img_decoder import TextDecoder
 import cv2
 
 
-while (1):
 
+while (1):
+    os.system("clear")
+
+    #Prints de different options
     print("[1] Encode")
     print("[2] Decode")
     print("[3] Exit")
+
 
     option = input("Choose one of the options above: ")
 
@@ -33,7 +37,7 @@ while (1):
         print("Encoding")
 
         file_name_to_hide = input("Introduce the file name which content you want to encode: ")
-        with open(file_name_to_hide, 'rb') as file:
+        with open(file_name_to_hide, 'r') as file:
             content = file.read()
         
         #2. Generate a random key
@@ -135,13 +139,12 @@ while (1):
         ## Remove tmp files
         rmtree("tmp")
 
-
-
-
-    else:
+    elif option == "3":
         exit()
 
-
+    else:
+        print("ERROR: You have chosen an incorrect option. Please try again!")
+        
 
 
 
