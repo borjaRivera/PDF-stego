@@ -43,7 +43,6 @@ class AESCipher():
         """
         return s[:-ord(s[len(s)-1:])] # Removes padding from the output string
     
-
 if __name__ == '__main__':
     AESCipher.init("12345") 
 
