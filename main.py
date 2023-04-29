@@ -47,7 +47,7 @@ while (1):
         #3. Encrypt the contents of the file with this random key
         AESCipher.init(random_key_str)
         ciphered_content = AESCipher.encrypt(content).decode()
-        print("Ciphered content with key", ciphered_content)
+        #print("Ciphered content with key", ciphered_content)
 
         #4. Encrypt the random key with a key entered by the user.
         random_number = random.randint(0, 9999)
@@ -63,7 +63,7 @@ while (1):
         img_hiden_path = qr_name_path 
         output_path = path + 'qr_coldplay_hidden.png'
         Encoder.hide_image(img_visible_path, img_hiden_path, output_path)
-        print("Ocultado el QR")
+        #print("Ocultado el QR")
 
         #7. Hide the file content in the main PDF image
         path_coldplay_image_hidden = path + 'coldplay_image_hidden.png'

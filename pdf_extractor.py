@@ -10,7 +10,6 @@ class Extractor():
         img = cv2.imread(qr_path)
         det = cv2.QRCodeDetector()
         qr_content, pts, st_code = det.detectAndDecode(img)
-        print("QR content: ", st_code)
 
         if st_code == None:
             return False

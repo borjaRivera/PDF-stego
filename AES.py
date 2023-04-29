@@ -11,6 +11,7 @@ class AESCipher():
 
     def encrypt(raw):
         raw = AESCipher._pad(raw)
+        print(raw)
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(AESCipher.key, AES.MODE_CBC, iv)
         return base64.b64encode(iv + cipher.encrypt(raw.encode()))
@@ -22,6 +23,8 @@ class AESCipher():
         return AESCipher._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
 
     def _pad(s):
+        print(AESCipher.bs)
+        print(str(chr(AESCipher.bs - len(s) % AESCipher.bs)))
         return s + (AESCipher.bs - len(s) % AESCipher.bs) * chr(AESCipher.bs - len(s) % AESCipher.bs)
 
     @staticmethod
