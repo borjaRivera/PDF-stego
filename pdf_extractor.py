@@ -2,8 +2,20 @@
 import fitz
 import os
 from PIL import Image
+import cv2
 
 class Extractor():
+
+    def check_qr(qr_path):
+        img = cv2.imread(qr_path)
+        det = cv2.QRCodeDetector()
+        qr_content, pts, st_code = det.detectAndDecode(img)
+        print("QR content: ", st_code)
+
+        if st_code == None:
+            return False
+        else:
+            return True
 
     def extractImages(file_path):
 
@@ -45,6 +57,9 @@ class Extractor():
             with open(os.path.join(images_path, image_name) , 'wb') as image_file:
                 image_file.write(image_bytes)
                 image_file.close()
+
+
+
 
 
 if __name__ == '__main__':

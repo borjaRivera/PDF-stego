@@ -5,18 +5,26 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Paragraph, Image
 
 
+
+
 class PdfTemplate:
 
-    def create (pdf_name, image_name, qr_name):
+    
+    def create(pdf_name, image_name, qr_name, secret_code):
+        number = "6"
+
+
+
         # Información del concierto
         nombre_artista = "Coldplay"
         fecha = "28 de mayo de 2023"
-        hora = "21:30h"
+        hora = "21:30h      "
         lugar = "Estadio Santiago Bernabéu"
         precio = "150 €"
         nombre_comprador = "Florentino Pérez"
         asiento = "Sección A, Fila 10, Asiento 5"
         gira = "Coldplay - Music Of The Spheres World Tour 21:30h"
+
 
         # Estilos para los elementos del PDF
         estilo_normal = getSampleStyleSheet()["Normal"]
@@ -41,17 +49,33 @@ class PdfTemplate:
         contenido.append(Spacer(1, 0.2 * inch))
 
         # Tabla con la información del concierto y el código QR
+        fecha_header = "Fecha:"
+        fecha_espacios = " " * int(secret_code[0])  # espacios * secret_code[0]
+        fecha_final_header = "{}{}".format(fecha_header, fecha_espacios)
+
+        hora_header = "Hora:"
+        hora_espacios = " " * int(secret_code[1])  # espacios * secret_code[0]
+        hora_final_header = "{}{}".format(hora_header, hora_espacios)
+
+        lugar_header = "Lugar:"
+        lugar_espacios = " " * int(secret_code[2])  # espacios * secret_code[0]
+        lugar_final_header = "{}{}".format(lugar_header, lugar_espacios)
+
+        precio_header = "Precio:"
+        precio_espacios = " " * int(secret_code[3])# espacios * secret_code[0]
+        precio_final_header = "{}{}".format(precio_header, precio_espacios)
+
         tabla = Table([
-            [Paragraph("<b>Fecha:</b>", estilo_normal), fecha],
-            [Paragraph("<b>Hora:</b>", estilo_normal), hora],
-            [Paragraph("<b>Lugar:</b>", estilo_normal), lugar],
-            [Paragraph("<b>Precio:</b>", estilo_normal), precio],
+            [fecha_final_header, fecha],
+            [hora_final_header, hora],
+            [lugar_final_header, lugar],
+            [precio_final_header, precio],
             [Paragraph("<b>Nombre del comprador:</b>", estilo_normal), nombre_comprador],
             [Paragraph("<b>Asiento:</b>", estilo_normal), asiento],
             [Paragraph("<b>Código QR:</b>", estilo_normal), Image(qr_name, 100, 100)]
         ], colWidths=[2.5 * inch, 4.5* inch])
         tabla.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#FAD000")),
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#333333")),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.HexColor("#FFFFFF")),
             ("ALIGNMENT", (0, 0), (-1, -1), "LEFT"),
             ("FONTNAME", (0, 0), (-1, -1), "Helvetica-Bold"),
@@ -80,8 +104,14 @@ class PdfTemplate:
         por cuenta del organizador, por lo que queda expresamente eximido de toda obligación y/o responsabilidad que compete al organizador. Toda reclamación sobre la realización, suspensión, modificación o
         anulación del espectáculo deberá dirigirse al organizador cuyos datos constan en esta misma entrada. Las relaciones jurídicas, derecho y obligaciones derivadas de la tenencia de esta entrada estarán
         sujetas en todo momento a lo establecido por las leyes españolas vigentes."""
-
         contenido.append(Paragraph(texto_legal, estilo_normal))
 
         # Añadir el contenido al PDF y cerrarlo
         doc.build(contenido)
+
+
+if __name__ == '__main__':
+
+	PdfTemplate.create("prueba.pdf", "./images/coldplay_image.png", "./images/coldplay_qr.png", "9999")
+        
+    
