@@ -6,21 +6,32 @@ import cv2
 
 class Extractor():
 
+    """
+    This method checks if the image that is sent as argument contains a QR Code or not
+    """
     def check_qr(qr_path):
+        print("QR: ",qr_path)
         img = cv2.imread(qr_path)
         det = cv2.QRCodeDetector()
         qr_content, pts, st_code = det.detectAndDecode(img)
-
-        if st_code == None:
+        print("QR Content: ", qr_content)
+        print("ST_CODE: ",st_code)
+        if st_code == None or st_code=="":
+            print("No es QR")
             return False
         else:
             return True
 
+    """
+    This method extract all the images that appear in the file that is provided as argument
+    """
     def extractImages(file_path):
 
         #Define path for saved images
-        images_path = 'tmp'
-        os.mkdir(images_path)
+        tmp_path = 'tmp'
+        isExist = os.path.exists(tmp_path)
+        if not isExist:
+            os.mkdir(tmp_path)
 
         #Open PDF file
         pdf_file = fitz.open(file_path)
@@ -53,7 +64,7 @@ class Extractor():
             #Generate image file name
             image_name = str(i) + '.' + image_ext
             #Save image
-            with open(os.path.join(images_path, image_name) , 'wb') as image_file:
+            with open(os.path.join(tmp_path, image_name) , 'wb') as image_file:
                 image_file.write(image_bytes)
                 image_file.close()
 
@@ -61,5 +72,5 @@ class Extractor():
 
 
 
-if __name__ == '__main__':
-	Extractor.extractImages("entrada_coldplay.pdf")
+#if __name__ == '__main__':
+#	Extractor.extractImages("entrada_coldplay.pdf")
