@@ -1,102 +1,90 @@
-"""
-	Ocultar mensaje en una imagen utilizando esteganografía, ocultando un bit en cada nivel de color
-
-	Nota: recuerda instalar Pillow:
-		pip install Pillow
-
-	@author parzibyte
-	@date 06-04-2018
-	@web parzibyte.me/blog
-"""
 from PIL import Image
-import math #Utilizado sólo para redondear hacia abajo
+import math 
 
 class TextEncoder():
 
-	caracter_terminacion = [1, 1, 1, 1, 1, 1, 1, 1]
+	final_char = [1, 1, 1, 1, 1, 1, 1, 1]
 
 
-	def obtener_representacion_ascii(caracter):
-		return ord(caracter)
+	def get_ascii(character):
+		return ord(character)
 
-	def obtener_representacion_binaria(numero):
-		return bin(numero)[2:].zfill(8)
+	def get_binary(number):
+		return bin(number)[2:].zfill(8)
 
-	def cambiar_ultimo_bit(byte, nuevo_bit):
-		return byte[:-1] + str(nuevo_bit)
+	def change_last_bit(byte, new_bit):
+		return byte[:-1] + str(new_bit)
 
-	def binario_a_decimal(binario):
-		return int(binario, 2)
+	def binary_to_decimal(binary):
+		return int(binary, 2)
 
-	def modificar_color(color_original, bit):
-		color_binario = TextEncoder.obtener_representacion_binaria(color_original)
-		color_modificado = TextEncoder.cambiar_ultimo_bit(color_binario, bit)
-		return TextEncoder.binario_a_decimal(color_modificado)
+	def modify_color(color_original, bit):
+		color_in_binary = TextEncoder.get_binary(color_original)
+		color_modified = TextEncoder.change_last_bit(color_in_binary, bit)
 
-	def obtener_lista_de_bits(texto):
+		return TextEncoder.binary_to_decimal(color_modified)
+
+	def get_bits(text):
 		lista = []
-		for letra in texto:
-			representacion_ascii = TextEncoder.obtener_representacion_ascii(letra)
-			representacion_binaria = TextEncoder.obtener_representacion_binaria(representacion_ascii)
-			for bit in representacion_binaria:
+		for character in text:
+			character_ascii = TextEncoder.get_ascii(character)
+			character_binary = TextEncoder.get_binary(character_ascii)
+			for bit in character_binary:
 				lista.append(bit)
-		for bit in TextEncoder.caracter_terminacion:
+		for bit in TextEncoder.final_char:
 			lista.append(bit)
 		return lista
 
-	def ocultar_texto(mensaje, ruta_imagen_original, ruta_imagen_salida="salida.png"):
-		print("Ocultando mensaje...".format(mensaje))
-		imagen = Image.open(ruta_imagen_original)
-		pixeles = imagen.load()
+	def hide(msg, origin_img_path, destination_img_path="output.png"):
+		#print("Hidding message...".format(msg))
+		img = Image.open(origin_img_path)
+		pixels = img.load()
 
-		tamaño = imagen.size
-		anchura = tamaño[0]
-		altura = tamaño[1]
+		img_size = img.size
+		img_width = img_size[0]
+		img_height = img_size[1]
 
-		lista = TextEncoder.obtener_lista_de_bits(mensaje)
-		contador = 0
-		longitud = len(lista)
-		for x in range(anchura):
-			for y in range(altura):
-				if contador < longitud:
-					pixel = pixeles[x, y]
+		pixels_list = TextEncoder.get_bits(msg)
+		counter = 0
+		pixels_list_length = len(pixels_list)
 
+		for x in range(img_width):
+			for y in range(img_height):
+				if counter < pixels_list_length:
+					pixel = pixels[x, y]
 
-					rojo = pixel[0]
-					verde = pixel[1]
-					azul = pixel[2]
+					red = pixel[0]
+					green = pixel[1]
+					blue = pixel[2]
 
-					if contador < longitud:
-						rojo_modificado = TextEncoder.modificar_color(rojo, lista[contador])
-						contador += 1
+					if counter < pixels_list_length:
+						red_modified = TextEncoder.modify_color(red, pixels_list[counter])
+						counter += 1
 					else:
-						rojo_modificado = rojo
+						red_modified = red
 
-					if contador < longitud:
-						verde_modificado = TextEncoder.modificar_color(verde, lista[contador])
-						contador += 1
+					if counter < pixels_list_length:
+						green_modified = TextEncoder.modify_color(green, pixels_list[counter])
+						counter += 1
 					else:
-						verde_modificado = verde
+						green_modified = green
 
-					if contador < longitud:
-						azul_modificado = TextEncoder.modificar_color(azul, lista[contador])
-						contador += 1
+					if counter < pixels_list_length:
+						blue_modified = TextEncoder.modify_color(blue, pixels_list[counter])
+						counter += 1
 					else:
-						azul_modificado = azul
+						blue_modified = blue
 
-					pixeles[x, y] = (rojo_modificado, verde_modificado, azul_modificado)
+					pixels[x, y] = (red_modified, green_modified, blue_modified)
 				else:
 					break
 			else:
 				continue
 			break
 
-		if contador >= longitud:
-			print("Mensaje escrito correctamente")
+		if counter >= pixels_list_length:
+			print("Message hidden correctly")
 		else:
-			print("Advertencia: no se pudo escribir todo el mensaje, sobraron {} caracteres".format( math.floor((longitud - contador) / 8) ))
+			print("Danger: not able to write the message, left {} characters".format( math.floor((pixels_list_length - counter) / 8) ))
 
-		imagen.save(ruta_imagen_salida)
-
-
-#ocultar_texto("Hola, mundo", "../coldplay_image.png")
+		img.save(destination_img_path)

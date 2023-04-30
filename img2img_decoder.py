@@ -11,37 +11,6 @@ class Decoder():
 		Opens an image which contains information of a hidden image,
 		recovers the hidden image and saves it in a specified or
 		default location.
-
-		Call example:
-			python decode.py img/output.png img/res.png
-		"""
-
-		"""
-		if len(sys.argv) < 2 or len(sys.argv) > 3:
-			print ("--------------------HIiI v1.0--------------------")
-			print ( "-- DECODING")
-			print ( "-- To recover a concealed image, specify the")
-			print ( "-- path to the image in which it is hidden.")
-			print ( "-- As an optional argument, you can specify the")
-			print ( "-- path to save the restored image to.")
-			print ( "--")
-			print ( "-- python decode.py path/to/image/to/restore/from")
-			print ( "--     path/to/save/to")
-			print ( "--")
-			print ( "-- Example:")
-			print ( "--   python decode.py img/output.png img/res.png")
-			print ( "--")
-			print ( "-------------------------------------------------")
-			return
-		if len(sys.argv) >= 2:
-			img_path = sys.argv[1]
-		if len(sys.argv) >= 3:
-			output_path = sys.argv[2]
-			filename, file_ext = os.path.splitext(output_path)
-			output_path = filename + '.png'
-		else:
-			output_path = 'images/decoded_image.png'
-
 		"""
 
 		decoded_image = Decoder.decode(Image.open(img_hidden_path))
@@ -53,12 +22,6 @@ class Decoder():
 		all pixels of the hidden image.
 		The information representing a hidden image is stored in the 4 least significant
 		bits of a subset of pixels of the visible image.
-
-		Args:
-			image:            An RGB image to recover a hidden image from
-			width_visible:    Width of the visible image
-			height_visible:   Height of the visible image
-			pixel_count:      Number of pixels in the hidden image
 
 		Returns:
 			A binary string representing pixel values of the hidden image
@@ -79,11 +42,6 @@ class Decoder():
 	def reconstruct_image(image_pixels, width, height):
 		"""
 		Recontructs the hidden image using the extracted string of pixel binary values.
-
-		Args:
-			image_pixels:    A string of binary values of all pixels of the image to be recovered
-			width:           Width of the image to be recovered
-			height:          Height of the image to be recovered
 
 		Returns:
 			The recovered image
@@ -108,9 +66,6 @@ class Decoder():
 		extracts the hidden binary pixel values from the image and reconstructs the hidden
 		image.
 
-		Args:
-			image:    An RGB image to recover a hidden image from
-
 		Returns:
 			A recovered image, which was hidden in the binary representation of the visible image
 		"""
@@ -126,5 +81,5 @@ class Decoder():
 		decoded_image = Decoder.reconstruct_image(hidden_image_pixels, width_hidden, height_hidden)
 		return decoded_image
 
-if __name__ == '__main__':
-	Decoder.extract_hidden_image("qr_coldplay_hidden.png", "decoded.png")
+#if __name__ == '__main__':
+#	Decoder.extract_hidden_image("qr_coldplay_hidden.png", "decoded.png")

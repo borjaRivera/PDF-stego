@@ -14,40 +14,6 @@ class Encoder():
 
 		The number of pixels in the image used for hiding an image must be at least (2 * number of pixels in the image to be
 		hidden + 1)
-
-		Call example:
-			python encode.py img/vis.jpg img/hid.jpg img/output.png
-		"""
-		"""
-		if len(sys.argv) < 3 or len(sys.argv) > 4:
-			print("--------------------HIiI v1.0--------------------")
-			print("-- ENCODING")
-			print("-- To conceal an image in another image, specify")
-			print("-- the location of two images, the one you want")
-			print("-- to hide and one you want to use to hide the")
-			print("-- other one.")
-			print("-- As an optional argument, you can specify the")
-			print("-- target location where you want to save the")
-			print("-- output image.")
-			print("--")
-			print("-- python encode.py path/to/image/for/hiding")
-			print("--     path/to/image/to/hide path/to/save/to")
-			print("--")
-			print("-- Example:")
-			print("--   python encode.py img/vis.jpg img/hid.jpg")
-			print("--       img/output.png")
-			print("--")
-			print("-------------------------------------------------")
-			return
-		if len(sys.argv) >= 3:
-			img_visible_path = sys.argv[1]
-			img_hidden_path = sys.argv[2]
-		if len(sys.argv) >= 4:
-			output_path = sys.argv[3]
-			filename, file_ext = os.path.splitext(output_path)
-			output_path = filename + '.png'
-		else:
-			output_path = 'images/encoded_image.png'
 		"""
 
 		img_visible = Image.open(img_visible_path)
@@ -60,11 +26,6 @@ class Encoder():
 	def get_binary_pixel_values(img, width, height):
 		"""
 		Retrieves a string of concatenated binary representations of RGB channel values of all pixels in an image.
-
-		Args:
-			img:    An RGB image
-			width:  Width of the image
-			height: Height of the image
 
 		Returns:
 			A string with concatenated binary numbers representing the RGB channel values of all pixels in the image
@@ -102,14 +63,6 @@ class Encoder():
 		The first pixel in the top left corner is used to store the width and height of the image to be hidden, which is
 		necessary for recovery of the hidden image.
 
-		Args:
-			img_visible:          An RGB image to be used for hiding another image
-			hidden_image_pixels:  Binary string representing all pixel values of the image to be hidden
-			width_visible:        Width of the image to be used for hiding another image
-			height_visible:       Height of the image to be used for hiding another image
-			width_hidden:         Width of the image to be hidden
-			height_hidden:        Height of the image to be hidden
-
 		Returns:
 			An RGB image which is a copy of img_visible where the 4 least significant bits of a subset of pixels
 			are replaced with bits representing the hidden image.
@@ -140,10 +93,6 @@ class Encoder():
 		Loads the image to be hidden and the image used for hiding and conceals the pixel information from one image
 		in the other one.
 
-		Args:
-			img_visible:    An RGB image used for hiding another image
-			img_hidden:     An RGB image to be concealed
-
 		Returns:
 			An RGB image which is supposed to be not very different visually from img_visible, but contains all the information
 			necessary to recover an identical copy of the image we want to hide.
@@ -160,8 +109,7 @@ class Encoder():
 
 	
 
-if __name__ == '__main__':
-	Encoder.hide_image("qr_coldplay_bueno.png", "qr_random_key_ciphered.png", "qr_test_definitivo.png")
-
+#if __name__ == '__main__':
+#	Encoder.hide_image("qr_coldplay_bueno.png", "qr_random_key_ciphered.png", "qr_test_definitivo.png")
 
 
