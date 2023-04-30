@@ -15,13 +15,14 @@ import cv2
 import random
 import fitz
 
-
+correct_pin=False
 
 while (1):
 
     print("[1] Encode")
-    print("[2] Decode")
-    print("[3] Exit")
+    print("[2] Extract Images")
+    print("[3] Decode Info")
+    print("[4] Exit")
 
     option = input("Choose one of the options above: ")
 
@@ -116,17 +117,27 @@ while (1):
             print("No coincide con el código de verificación. Introduce el codigo generado en el Encode")
         
         else:
-
+            correct_pin=True
             #2. Extract background image and QR
             Extractor.extractImages(pdf_name)
-
+            print("Images extracted at ./tmp folder")
+            
+    elif option=="3":
+        if correct_pin:
+            qr_path=input("Go to tmp folder and write the number associated with QR Code (just the number, not the extension): ")
             tmp_path = "tmp/"
-            image_tmp_path = tmp_path + "1.png"
-            qr_tmp_path = tmp_path + "2.png"
-
-            if not Extractor.check_qr(qr_tmp_path):
+            image_tmp_path="" 
+            qr_tmp_path=""
+            if qr_path=="1":
                 image_tmp_path = tmp_path + "2.png"
                 qr_tmp_path = tmp_path + "1.png"
+            elif qr_path=="2":
+                image_tmp_path = tmp_path + "1.png"
+                qr_tmp_path = tmp_path + "2.png"
+
+            #if not Extractor.check_qr(qr_tmp_path):
+            #    image_tmp_path = tmp_path + "2.png"
+            #    qr_tmp_path = tmp_path + "1.png"
 
 
             #3. Extraer del QR del PDF el QR con la clave cifrada
