@@ -83,8 +83,8 @@ class TextEncoder():
 			break
 
 		if counter >= pixels_list_length:
-			print("Message hidden correctly")
+			print("\n[OK] Message hidden correctly")
 		else:
-			print("Danger: not able to write the message, left {} characters".format( math.floor((pixels_list_length - counter) / 8) ))
+			print("\nDanger: not able to write the message, left {} characters".format( math.floor((pixels_list_length - counter) / 8) ))
 
 		img.save(destination_img_path)

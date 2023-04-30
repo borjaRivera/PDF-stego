@@ -1,8 +1,6 @@
-#!/usr/bin/python
-
 import os, sys
 from PIL import Image
-from utils import rgb_to_binary, add_leading_zeros
+from stego_image_in_image.utils import rgb_to_binary, add_leading_zeros
 
 class Encoder():
 

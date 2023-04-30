@@ -1,13 +1,3 @@
-"""
-	Leer mensaje en una imagen utilizando esteganografía, leyendo un bit en cada nivel de color
-
-	Nota: recuerda instalar Pillow:
-		pip install Pillow
-
-	@author parzibyte
-	@date 06-04-2018
-	@web parzibyte.me/blog
-"""
 from PIL import Image
 
 class TextDecoder():
