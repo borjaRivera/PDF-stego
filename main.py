@@ -15,9 +15,7 @@ import cv2
 import random
 import fitz
 
-correct_pin = False
-max_pin_attempts = 3
-current_attempt = 0
+
 
 while (1):
 
@@ -89,15 +87,12 @@ while (1):
         #1. Read the PDF filename to decode
         pdf_name = input("\nIntroduce the PDF file name to decode: ")
 
-        #2. User introduce Verification PIN generated in the Encoding of the file
-        user_pin = input("\nIntroduce the user PIN to decrypt the random key: ")
-
-        #3. Check if Verification Code is the same with the one stored in the PDF
+        #2. Extract Verification PIN code stored in the PDF
         doc = fitz.open(pdf_name)
         text = ""
         for page in doc:
             text+=page.get_text()
-
+        doc.close()
         text_array = text.split("\n")
         fecha = text_array[2]
         hora = text_array[4]
@@ -105,71 +100,76 @@ while (1):
         precio = text_array[8]
 
         digits=""
-
-
         digits+=str(fecha.count(" "))
         digits+=str(hora.count(" "))
         digits+=str(lugar.count(" "))
         digits+=str(precio.count(" "))
 
-
-
-        if user_pin != digits:
-            current_attempt += 1
-            left_attempts = max_pin_attempts - current_attempt
-            print("\n[INCORRECT PIN] PIN Code does not match, try again. You have " + str(left_attempts) + " attempts before deleting PDF file for security reasons.")
+        #3. User introduce Verification PIN generated in the Encoding of the file
+        left_attempts=3
+        correct_pin=False
+        while(left_attempts>0 and correct_pin==False):
+            user_pin = input("\nIntroduce the user PIN to decrypt the random key: ")
+            if user_pin != digits:
+                left_attempts-=1
+                print("\n[INCORRECT PIN] PIN Code does not match, try again. You have " + str(left_attempts))
+            else:
+               correct_pin=True
             
-            if left_attempts <= 0:
-                print("\nDeleting PDF file...")
-                os.remove(pdf_name)
+        #In case the user fails 3 times introducing PIn Code, we remove the file
+        if left_attempts == 0:
+            print("\nMaximum tries exceeded")
+            print("\nDeleting PDF file...")
+            os.remove(pdf_name)
 
         else:
-            correct_pin = True
 
             #4. Extract background image and QR
             Extractor.extractImages(pdf_name)
             print("\n[OK] Images extracted at ./tmp folder")
 
-            #5. Check if Verification PIN is correct and introduce QR image to extract info
-            if correct_pin:
-                print("\n[OK] Verification Pin Code is correct")
+            #5. Extract info from the PDF
+            print("\n[OK] Verification Pin Code is correct")
+            qr_path=""
+            #As there are only two images to extract, they are saved as 1.png and 2.png
+            while(qr_path!="1" and qr_path!="2"):
                 qr_path=input("\n[!] Go to tmp folder generated and write the number associated with QR Code (just the number, not the extension): ")
 
-                tmp_path = "tmp/"
-                image_tmp_path="" 
-                qr_tmp_path=""
+            tmp_path = "tmp/"
+            image_tmp_path="" 
+            qr_tmp_path=""
 
-                if qr_path=="1":
-                    image_tmp_path = tmp_path + "2.png"
-                    qr_tmp_path = tmp_path + "1.png"
+            if qr_path=="1":
+                image_tmp_path = tmp_path + "2.png"
+                qr_tmp_path = tmp_path + "1.png"
 
-                elif qr_path=="2":
-                    image_tmp_path = tmp_path + "1.png"
-                    qr_tmp_path = tmp_path + "2.png"
+            elif qr_path=="2":
+                image_tmp_path = tmp_path + "1.png"
+                qr_tmp_path = tmp_path + "2.png"
 
 
-                #6. Extract hidden QR (stores the random key to decipher the hidden content inside the image) from the visible QR
-                qr_ciphered_path = tmp_path + "qr_random_key.png"
-                Decoder.extract_hidden_image(qr_tmp_path, qr_ciphered_path)
+            #6. Extract hidden QR (stores the random key to decipher the hidden content inside the image) from the visible QR
+            qr_ciphered_path = tmp_path + "qr_random_key.png"
+            Decoder.extract_hidden_image(qr_tmp_path, qr_ciphered_path)
 
-                #7. Read the hidden QR Code to obtain the key to decipher the information hidden in the image
-                img = cv2.imread(qr_ciphered_path)
-                det = cv2.QRCodeDetector()
-                random_key_clear, pts, st_code = det.detectAndDecode(img)
-                # print("\nRandom key hidden in QR: ", random_key_clear)
+            #7. Read the hidden QR Code to obtain the key to decipher the information hidden in the image
+            img = cv2.imread(qr_ciphered_path)
+            det = cv2.QRCodeDetector()
+            random_key_clear, pts, st_code = det.detectAndDecode(img)
+            # print("\nRandom key hidden in QR: ", random_key_clear)
 
-                #8. Extract hidden content in the image
-                text_ciphered = TextDecoder.read(image_tmp_path)
-                
-                #9. Decipher the content that was hidden in the image
-                AESCipher.init(random_key_clear)
-                text_clear = AESCipher.decrypt(text_ciphered)
-                print("\nThe secret is:\n")
-                print(text_clear)
-                print("\n")
+            #8. Extract hidden content in the image
+            text_ciphered = TextDecoder.read(image_tmp_path)
+            
+            #9. Decipher the content that was hidden in the image
+            AESCipher.init(random_key_clear)
+            text_clear = AESCipher.decrypt(text_ciphered)
+            print("\nThe secret is:\n")
+            print(text_clear)
+            print("\n")
 
-                #10. Remove tmp generated files
-                rmtree("tmp")
+            #10. Remove tmp generated files
+            rmtree("tmp")
 
     else:
         exit()
