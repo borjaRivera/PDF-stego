@@ -172,6 +172,13 @@ while (1):
             print(text_clear)
             print("\n")
 
+            output_file = "secret.txt"
+            print("[OK] Saving in file '" + output_file + "'")
+            with open(output_file, 'w') as f:
+                f.write(text_clear)
+                f.close()
+            
+
             #10. Remove tmp generated files
             rmtree("tmp")
 
