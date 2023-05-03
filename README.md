@@ -1,6 +1,6 @@
 # PDF-stego
 
-A Python tool to hide information inside different elements in a PDF. The tool has two options: ENCODE and DECODE.
+A Python tool to hide information inside different elements in a PDF. The tool has two options: ENCODE and DECODE. Available on Linux and Windows!
 
 ## Installation 🛠
 
@@ -9,6 +9,8 @@ sudo apt-get updade
 sudo apt-get install python3
 
 git clone https://github.com/borjaRivera/PDF-stego.git
+
+cd PDF-stego
 
 pip install -r requirements.txt
 ```
