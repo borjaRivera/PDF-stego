@@ -11,11 +11,12 @@ sudo apt-get install python3
 git clone https://github.com/borjaRivera/PDF-stego.git
 
 pip install -r requirements.txt
+```
 
 ## Usage
 ```bash
 sudo python3 main.py
-
+```
 
 ## Encode
 The ENCODE option generates a PDF simulating a Coldplay concert ticket with some information about it, an image and a QR. The application reads the content inside a plaintext file which is wanted to be hidden.
