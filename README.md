@@ -21,10 +21,17 @@ sudo python3 main.py
 ```
 
 ## Encode
-The ENCODE option generates a PDF simulating a Coldplay concert ticket with some information about it, an image and a QR. The application reads the content inside a plaintext file which is wanted to be hidden.
-The content must be ciphered before being stored in the PDF, so the program generates a 16 character random key and cipher it using AES-128 and stores the data using LSB in the image of the ticket generated. 
-To preserve that random key for future decodings, the application generates a QR which stores it and then, that QR is hidden inside the visible QR in the PDF ticket. 
-In order to secure the process of enconding and decoding information, during the decoding option, it is generated a Verification PIN and it is given to the user. That Verification PIN will be requested in the decoding option to get the hidden information.
+This method basically generates a PDF event ticket where the hidden information is inserted in different elements of it. It is divided into several steps:
+1. Reading the information to be hidden: The tool reads the information to be hidden from a file.
+2. Generating a random key: A random key is generated, which will be used to encrypt the information to be hidden.
+3. Encrypting the information: The tool encrypts the information using the Advanced Encryption Standard (AES) 128 encryption algorithm, which is a symmetric encryption algorithm that uses a 128-bit key to ensure the confidentiality of the information. This key is the random key generated previously
+4. Generates a random PIN code of 4 digits for the user in order to Authz.
+5. Hiding the encrypted information: The encrypted information is then hidden within the image placed in the body of the event ticket using a LSB method (explained above). 
+6. Generating a QR code for the random key: A QR code is generated for the random key,
+7. Store the QR code of the random key within the QR code that redirects to the singer's website. This is done to ensure that the key is hidden and can only be accessed by someone who has the QR code.
+8. Generates the PDF file that contains the image, the QR code of the website, and the PIN code. In that step a 4-digit PIN code is encoded as blanks within the PDF text (to be more specific inside the table that contains the information related with the event). This ensures that the user who wants to extract the information is authorized to do so and protects against unauthorized access or extraction of the hidden information. If the user enters the wrong PIN code three times, the PDF file will be deleted.
+
+
 
 ## Decode
 In the DECODE option, user must provide the PDF name which contains the secret encoded on it and then, specify the Verification PIN which was generated during the encoding. If the PIN is correct, the message will be shown to him.
