@@ -2,6 +2,8 @@
 
 A Python tool to hide information inside different elements in a PDF. The tool has two options: ENCODE and DECODE. Available on Linux and Windows!
 
+The maximum size of the message that can be entered is 85 KB.
+
 ## Installation 🛠
 
 ```bash
