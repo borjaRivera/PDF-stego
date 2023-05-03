@@ -28,9 +28,9 @@ In order to secure the process of enconding and decoding information, during the
 In the DECODE option, user must provide the PDF name which contains the secret encoded on it and then, specify the Verification PIN which was generated during the encoding. If the PIN is correct, the message will be shown to him.
 
 ## Authors & Contributors
-Borja Rivera González
-Alejandro Rivera Horrillo
-Mario Villapalos Campeño
+Borja Rivera González,
+Alejandro Rivera Horrillo,
+Mario Villapalos Campeño,
 Javier Rodrigo Martín
 
 ## License
