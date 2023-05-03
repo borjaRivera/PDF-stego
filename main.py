@@ -66,7 +66,11 @@ while (1):
 
         #7. Hide the file content in the main PDF image
         path_coldplay_image_hidden = path + 'coldplay_image_hidden.png'
-        TextEncoder.hide(ciphered_content, path_coldplay_image, path_coldplay_image_hidden)
+        hidden = TextEncoder.hide(ciphered_content, path_coldplay_image, path_coldplay_image_hidden)
+
+        if hidden == False:
+            exit()
+
 
         #8. Generate PDF file that contains the image, the QR code, and the PIN code
         pdf_name = input("\nIntroduce the PDF name to generate: ")
