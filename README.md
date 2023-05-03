@@ -34,7 +34,17 @@ This method basically generates a PDF event ticket where the hidden information 
 
 
 ## Decode
-In the DECODE option, user must provide the PDF name which contains the secret encoded on it and then, specify the Verification PIN which was generated during the encoding. If the PIN is correct, the message will be shown to him.
+This method basically reads a PDF event ticket where the hidden information is inserted in different elements of it and extracts the hidden message. It can be broken down into several steps:
+1. Asks the user for the PDF filename that wants to decode
+2. Extract the authz PIN code stored in the table of the information related with the event. To do this we read the contents of the PDF document and split it into an array of strings, where each element represents a line of text in the document. Then we access those parts of the array where the blanks are encoded (“Fecha: ”, “Hora: ”, “Lugar: ”, “Precio: ”). It will be used to compare it with the PIN code introduced by the user.
+3. Asks the user to introduce the PIN code and provides a limited number of attempts to enter the correct PIN code. Once the correct PIN code is entered, the random key is decrypted and the hidden information is extracted from the PDF file. If the user exceeds the maximum number of attempts to enter the correct PIN code, the PDF file is deleted to protect the hidden information from unauthorized access.
+4. Extract the body image and the QR code from the PDF file.
+5. Extract hidden QR code ( the one that stores the random key) rom the visible QR code (the ones that redirects to Coldplay’s website)
+6. Read the hidden QR code to obtain the random key for the decryption of the information hidden in the image.
+7. Extract the hidden content from the body image. First we extract the hidden content from an image file. Specifically, we read an image file and extract the least significant bit (LSB) of the red, green, and blue pixel values for each pixel in the image. These LSB values are then combined to form binary bytes, which are converted to ASCII characters. The extracted ASCII characters are concatenated to form the hidden message that was previously encrypted and hidden within the image file. The code reads the pixels of the image one by one, and stops when it reaches a final character that signals the end of the hidden message. Finally, the decrypted message is returned as a string.
+8. Decrypts the content that was hidden in the image. For the decryption we have used AES 128 
+9. Show hidden message in console and writes the decrypted content in a file.
+
 
 ## Authors & Contributors
 Borja Rivera González,
