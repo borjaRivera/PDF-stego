@@ -1,5 +1,4 @@
 opencv_python==4.7.0.72
-Pillow==9.0.1
 Pillow==9.5.0
 pycryptodome==3.17
 PyMuPDF==1.22.1
